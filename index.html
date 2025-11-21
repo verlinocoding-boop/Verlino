@@ -87,14 +87,10 @@ h1{
     -webkit-text-fill-color: transparent;
     text-transform: uppercase;
     line-height: 1em;
-
-
 }
 h1.right{
     --to: right;
 }
-
-
 .banner{
     position: relative;
 }
@@ -135,79 +131,119 @@ h1.right{
             </h4>
             <button>Subscribe Now &#8599</button>
 
-
             <canvas id="dotsCanvas"></canvas>
         </div>
     </main>    
 
-
-
-
     <script>
-        let banner = document.querySelector('.banner');
+let banner = document.querySelector('.banner');
 let canvas = document.getElementById('dotsCanvas');
-canvas.width = canvas.offsetWidth;
-canvas.height = canvas.offsetHeight;
+
+// Match canvas size to banner
+function resizeCanvas() {
+    canvas.width = banner.offsetWidth;
+    canvas.height = banner.offsetHeight;
+}
+resizeCanvas();
+
 const ctx = canvas.getContext('2d');
 let dots = [];
 const arrayColors = ['#eee', '#545454', '#596d91', '#bb5a68', '#696541'];
 for (let index = 0; index < 100; index++) {
     dots.push({
-        x:  Math.floor(Math.random() * canvas.width),
-        y:  Math.floor(Math.random() * canvas.height),
+        x: Math.floor(Math.random() * canvas.width),
+        y: Math.floor(Math.random() * canvas.height),
         size: Math.random() * 3 + 5,
-        color: arrayColors[Math.floor(Math.random()* 5)]
+        color: arrayColors[Math.floor(Math.random()* arrayColors.length)],
     });
 }
-const drawDots = () => {
+
+// Moving & blinking dot setup
+let movingDot = {
+    x: canvas.width/2,
+    y: canvas.height/2,
+    dx: 2.5,
+    dy: 2,
+    size: 12,
+    color: "#ffeb3b",
+    blink: true,
+    blinkFrame: 0
+};
+
+function drawDots() {
     dots.forEach(dot => {
         ctx.fillStyle = dot.color;
         ctx.beginPath();
         ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI*2);
         ctx.fill();
-    })
+    });
 }
-drawDots();
-banner.addEventListener('mousemove', (event) => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawDots();
-    let mouse = {
-        x:  event.pageX - banner.getBoundingClientRect().left,
-        y:  event.pageY - banner.getBoundingClientRect().top
+
+function drawMovingDot() {
+    // Blinking every 20 frames
+    movingDot.blinkFrame++;
+    if (movingDot.blinkFrame % 40 < 20) {
+        ctx.save();
+        ctx.globalAlpha = 1;
+    } else {
+        ctx.save();
+        ctx.globalAlpha = 0.25; // faded blink
     }
-    dots.forEach(dot => {
-        let distance = Math.sqrt((mouse.x - dot.x) ** 2 + (mouse.y - dot.y) ** 2);
-        if(distance < 300){
-            ctx.strokeStyle = dot.color;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(dot.x, dot.y);
-            ctx.lineTo(mouse.x, mouse.y);
-            ctx.stroke();
-        }
-    })
-})
-banner.addEventListener('mouseout', () => {
+    ctx.beginPath();
+    ctx.arc(movingDot.x, movingDot.y, movingDot.size, 0, Math.PI*2);
+    ctx.fillStyle = movingDot.color;
+    ctx.shadowColor = "#fff";
+    ctx.shadowBlur = 20;
+    ctx.fill();
+    ctx.restore();
+}
+
+function moveDot() {
+    movingDot.x += movingDot.dx;
+    movingDot.y += movingDot.dy;
+    // Bounce off walls
+    if (movingDot.x < movingDot.size || movingDot.x > canvas.width - movingDot.size) {
+        movingDot.dx *= -1;
+    }
+    if (movingDot.y < movingDot.size || movingDot.y > canvas.height - movingDot.size) {
+        movingDot.dy *= -1;
+    }
+}
+
+// Animation loop
+function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawDots();
-})
+    drawMovingDot();
+    moveDot();
+    requestAnimationFrame(animate);
+}
+animate();
+
+banner.addEventListener('mousemove', (event) => {
+    // Handled in animate
+});
+
+banner.addEventListener('mouseout', () => {
+    // Handled in animate
+});
+
 window.addEventListener('resize', () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    canvas.width = banner.offsetWidth;
-    canvas.height = banner.offsetHeight;
-
-
+    resizeCanvas();
+    // Re-create dots for new size
     dots = [];
-    for (let index = 0; index < 50; index++) {
+    for (let index = 0; index < 100; index++) {
         dots.push({
-            x:  Math.floor(Math.random() * canvas.width),
-            y:  Math.floor(Math.random() * canvas.height),
+            x: Math.floor(Math.random() * canvas.width),
+            y: Math.floor(Math.random() * canvas.height),
             size: Math.random() * 3 + 5,
-            color: arrayColors[Math.floor(Math.random()* 5)]
+            color: arrayColors[Math.floor(Math.random()* arrayColors.length)]
         });
     }
-    drawDots();
-})
+    // Reset moving dot to center after resize
+    movingDot.x = canvas.width/2;
+    movingDot.y = canvas.height/2;
+});
     </script>
 </body>
 </html>
