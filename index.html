@@ -6,102 +6,100 @@
     <title>Document</title>
     <style>
         body{
-    color: #eee;
-    font-family:    ;
-    margin: 0;
-    background-image:
-    repeating-linear-gradient(
-        to right, #2d2a44 0 1px, transparent 2px 200px
-    ),
-    repeating-linear-gradient(
-        to bottom, #2d2a44 0 1px, transparent 2px 200px
-    ),
-    radial-gradient(
-        at 50% 50%, #2d2a44, #1d1b34
-    );
-}
-::-webkit-scrollbar{
-    width: 0;
-}
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    list-style: none;
-}
-header img{
-    width: 30px;
-}
-header{
-    width: min(1200px, 90vw);
-    margin: auto;
-    height: 70px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-header nav ul{
-    display: flex;
-    gap: 30px;
-}
-main{
-}
-main .banner{
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    text-align: center;
-    margin-top: -70px;
-}
-h1, h2, h3, h4, h5, h6{
-    font-weight: 500;
-}
-.banner button{
-    all: unset;
-    border: 1px solid #afaeae55;
-    padding: 10px 20px;
-    border-radius: 20px;
-    background-image: linear-gradient(
-        to bottom, #eee1, transparent, #eee1
-    );
-    cursor: pointer;
-    transition: 0.5s;
-}
-.banner button:hover{
-    background-color: #c691e6;
-    color: #040018;
-    box-shadow: 0 0 50px #c691e6;
-   
-}
-h1{
-    --to: left;
-    font-size: 4em;
-    font-weight: bold;
-    background-image: linear-gradient(
-        to var(--to), #89a5df, #e46e7f, #e8e191
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-transform: uppercase;
-    line-height: 1em;
-}
-h1.right{
-    --to: right;
-}
-.banner{
-    position: relative;
-}
-.banner #dotsCanvas{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-}
+            color: #eee;
+            font-family:    ;
+            margin: 0;
+            background-image:
+            repeating-linear-gradient(
+                to right, #2d2a44 0 1px, transparent 2px 200px
+            ),
+            repeating-linear-gradient(
+                to bottom, #2d2a44 0 1px, transparent 2px 200px
+            ),
+            radial-gradient(
+                at 50% 50%, #2d2a44, #1d1b34
+            );
+        }
+        ::-webkit-scrollbar{
+            width: 0;
+        }
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            list-style: none;
+        }
+        header img{
+            width: 30px;
+        }
+        header{
+            width: min(1200px, 90vw);
+            margin: auto;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header nav ul{
+            display: flex;
+            gap: 30px;
+        }
+        main .banner{
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            text-align: center;
+            margin-top: -70px;
+        }
+        h1, h2, h3, h4, h5, h6{
+            font-weight: 500;
+        }
+        .banner button{
+            all: unset;
+            border: 1px solid #afaeae55;
+            padding: 10px 20px;
+            border-radius: 20px;
+            background-image: linear-gradient(
+                to bottom, #eee1, transparent, #eee1
+            );
+            cursor: pointer;
+            transition: 0.5s;
+        }
+        .banner button:hover{
+            background-color: #c691e6;
+            color: #040018;
+            box-shadow: 0 0 50px #c691e6;
+        }
+        h1{
+            --to: left;
+            font-size: 4em;
+            font-weight: bold;
+            background-image: linear-gradient(
+                to var(--to), #89a5df, #e46e7f, #e8e191
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            line-height: 1em;
+        }
+        h1.right{
+            --to: right;
+        }
+        .banner{
+            position: relative;
+        }
+        .banner #dotsCanvas{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
     </style>
 </head>
 <body>
@@ -136,116 +134,136 @@ h1.right{
     </main>    
 
     <script>
-let banner = document.querySelector('.banner');
-let canvas = document.getElementById('dotsCanvas');
+        let banner = document.querySelector('.banner');
+        let canvas = document.getElementById('dotsCanvas');
 
-// Match canvas size to banner
-function resizeCanvas() {
-    canvas.width = banner.offsetWidth;
-    canvas.height = banner.offsetHeight;
-}
-resizeCanvas();
+        function resizeCanvas() {
+            canvas.width = banner.offsetWidth;
+            canvas.height = banner.offsetHeight;
+        }
+        resizeCanvas();
 
-const ctx = canvas.getContext('2d');
-let dots = [];
-const arrayColors = ['#eee', '#545454', '#596d91', '#bb5a68', '#696541'];
-for (let index = 0; index < 100; index++) {
-    dots.push({
-        x: Math.floor(Math.random() * canvas.width),
-        y: Math.floor(Math.random() * canvas.height),
-        size: Math.random() * 3 + 5,
-        color: arrayColors[Math.floor(Math.random()* arrayColors.length)],
-    });
-}
+        const ctx = canvas.getContext('2d');
+        let dots = [];
+        const arrayColors = ['#eee', '#545454', '#596d91', '#bb5a68', '#696541'];
 
-// Moving & blinking dot setup
-let movingDot = {
-    x: canvas.width/2,
-    y: canvas.height/2,
-    dx: 2.5,
-    dy: 2,
-    size: 12,
-    color: "#ffeb3b",
-    blink: true,
-    blinkFrame: 0
-};
+        // Generate random velocity and phase for shining
+        function createDot() {
+            let angle = Math.random() * Math.PI * 2;
+            let speed = Math.random() * 0.5 + 0.3;
+            return {
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                size: Math.random() * 3 + 5,
+                color: arrayColors[Math.floor(Math.random()* arrayColors.length)],
+                shinePhase: Math.random() * Math.PI * 2
+            }
+        }
 
-function drawDots() {
-    dots.forEach(dot => {
-        ctx.fillStyle = dot.color;
-        ctx.beginPath();
-        ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI*2);
-        ctx.fill();
-    });
-}
+        function makeDots() {
+            dots = [];
+            for (let i=0;i<100;i++) {
+                dots.push(createDot());
+            }
+        }
+        makeDots();
 
-function drawMovingDot() {
-    // Blinking every 20 frames
-    movingDot.blinkFrame++;
-    if (movingDot.blinkFrame % 40 < 20) {
-        ctx.save();
-        ctx.globalAlpha = 1;
-    } else {
-        ctx.save();
-        ctx.globalAlpha = 0.25; // faded blink
-    }
-    ctx.beginPath();
-    ctx.arc(movingDot.x, movingDot.y, movingDot.size, 0, Math.PI*2);
-    ctx.fillStyle = movingDot.color;
-    ctx.shadowColor = "#fff";
-    ctx.shadowBlur = 20;
-    ctx.fill();
-    ctx.restore();
-}
+        let movingDot = {
+            x: canvas.width/2,
+            y: canvas.height/2,
+            dx: 2.5,
+            dy: 2,
+            size: 12,
+            color: "#ffeb3b",
+            blink: true,
+            blinkFrame: 0
+        };
 
-function moveDot() {
-    movingDot.x += movingDot.dx;
-    movingDot.y += movingDot.dy;
-    // Bounce off walls
-    if (movingDot.x < movingDot.size || movingDot.x > canvas.width - movingDot.size) {
-        movingDot.dx *= -1;
-    }
-    if (movingDot.y < movingDot.size || movingDot.y > canvas.height - movingDot.size) {
-        movingDot.dy *= -1;
-    }
-}
+        function drawDots() {
+            // Each dot shines with pulse and moves
+            dots.forEach(dot => {
+                // Animate shine: scale between 0.3 and 1 by sin(time)
+                const shineStrength = 0.4 + 0.7 * Math.abs(Math.sin(performance.now()/550 + dot.shinePhase));
+                ctx.save();
+                ctx.globalAlpha = shineStrength;
+                ctx.beginPath();
+                ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI*2);
+                ctx.fillStyle = dot.color;
+                ctx.shadowColor = "#ffffff";
+                ctx.shadowBlur = 8 * shineStrength;
+                ctx.fill();
+                ctx.restore();
+            });
+        }
 
-// Animation loop
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawDots();
-    drawMovingDot();
-    moveDot();
-    requestAnimationFrame(animate);
-}
-animate();
+        function moveDots() {
+            dots.forEach(dot => {
+                dot.x += dot.vx;
+                dot.y += dot.vy;
 
-banner.addEventListener('mousemove', (event) => {
-    // Handled in animate
-});
+                // Bounce
+                if (dot.x < dot.size) {
+                    dot.x = dot.size;
+                    dot.vx *= -1;
+                } else if (dot.x > canvas.width - dot.size) {
+                    dot.x = canvas.width - dot.size;
+                    dot.vx *= -1;
+                }
+                if (dot.y < dot.size) {
+                    dot.y = dot.size;
+                    dot.vy *= -1;
+                } else if (dot.y > canvas.height - dot.size) {
+                    dot.y = canvas.height - dot.size;
+                    dot.vy *= -1;
+                }
+            });
+        }
 
-banner.addEventListener('mouseout', () => {
-    // Handled in animate
-});
+        // Improved moving/big blinking dot
+        function drawMovingDot() {
+            movingDot.blinkFrame++;
+            let alpha = movingDot.blinkFrame % 40 < 20 ? 1 : 0.25;
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.beginPath();
+            ctx.arc(movingDot.x, movingDot.y, movingDot.size, 0, Math.PI*2);
+            ctx.fillStyle = movingDot.color;
+            ctx.shadowColor = "#fff";
+            ctx.shadowBlur = 20 * alpha + 10;
+            ctx.fill();
+            ctx.restore();
+        }
 
-window.addEventListener('resize', () => {
-    resizeCanvas();
-    // Re-create dots for new size
-    dots = [];
-    for (let index = 0; index < 100; index++) {
-        dots.push({
-            x: Math.floor(Math.random() * canvas.width),
-            y: Math.floor(Math.random() * canvas.height),
-            size: Math.random() * 3 + 5,
-            color: arrayColors[Math.floor(Math.random()* arrayColors.length)]
+        function moveDot() {
+            movingDot.x += movingDot.dx;
+            movingDot.y += movingDot.dy;
+            if (movingDot.x < movingDot.size || movingDot.x > canvas.width - movingDot.size) {
+                movingDot.dx *= -1;
+            }
+            if (movingDot.y < movingDot.size || movingDot.y > canvas.height - movingDot.size) {
+                movingDot.dy *= -1;
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawDots();
+            moveDots();
+            drawMovingDot();
+            moveDot();
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            makeDots();
+            movingDot.x = canvas.width/2;
+            movingDot.y = canvas.height/2;
         });
-    }
-    // Reset moving dot to center after resize
-    movingDot.x = canvas.width/2;
-    movingDot.y = canvas.height/2;
-});
     </script>
 </body>
 </html>
-
 
