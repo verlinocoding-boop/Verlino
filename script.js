@@ -1,77 +1,71 @@
 const board = document.getElementById("board");
-const diceText = document.getElementById("dice");
-const positionText = document.getElementById("position");
+const turnText = document.getElementById("turn");
 
-let position = 1;
+let turn = "white";
+let selectedCell = null;
 
-// Tangga & Ular
-const snakesAndLadders = {
-  4: 14,
-  9: 31,
-  17: 7,
-  20: 38,
-  28: 84,
-  40: 59,
-  51: 67,
-  54: 34,
-  62: 19,
-  64: 60,
-  71: 91,
-  87: 24,
-  93: 73,
-  95: 75,
-  99: 78
+// Bidak unicode
+const pieces = {
+  white: ["♖","♘","♗","♕","♔","♗","♘","♖"],
+  black: ["♜","♞","♝","♛","♚","♝","♞","♜"]
 };
 
-// Buat papan
+// Papan awal
+let gameBoard = [
+  ["♜","♞","♝","♛","♚","♝","♞","♜"],
+  ["♟","♟","♟","♟","♟","♟","♟","♟"],
+  ["","","","","","","",""],
+  ["","","","","","","",""],
+  ["","","","","","","",""],
+  ["","","","","","","",""],
+  ["♙","♙","♙","♙","♙","♙","♙","♙"],
+  ["♖","♘","♗","♕","♔","♗","♘","♖"]
+];
+
 function createBoard() {
   board.innerHTML = "";
-  for (let i = 100; i >= 1; i--) {
-    const cell = document.createElement("div");
-    cell.classList.add("cell");
-    cell.innerText = i;
-    cell.id = "cell-" + i;
-    board.appendChild(cell);
+  for (let row = 0; row < 8; row++) {
+    for (let col = 0; col < 8; col++) {
+      const cell = document.createElement("div");
+      cell.classList.add("cell");
+      cell.classList.add((row + col) % 2 === 0 ? "white" : "black");
+      cell.dataset.row = row;
+      cell.dataset.col = col;
+      cell.textContent = gameBoard[row][col];
+      cell.addEventListener("click", () => cellClick(cell));
+      board.appendChild(cell);
+    }
   }
 }
 
-// Update posisi pemain
-function updatePlayer() {
-  document.querySelectorAll(".player").forEach(p => p.remove());
+function cellClick(cell) {
+  const row = cell.dataset.row;
+  const col = cell.dataset.col;
 
-  const player = document.createElement("div");
-  player.classList.add("player");
-
-  document.getElementById("cell-" + position).appendChild(player);
-  positionText.innerText = "Posisi: " + position;
+  if (selectedCell) {
+    movePiece(selectedCell, cell);
+    selectedCell.classList.remove("selected");
+    selectedCell = null;
+  } else if (cell.textContent !== "") {
+    selectedCell = cell;
+    cell.classList.add("selected");
+  }
 }
 
-// Lempar dadu
-function rollDice() {
-  let dice = Math.floor(Math.random() * 6) + 1;
-  diceText.innerText = "Dadu: " + dice;
+function movePiece(from, to) {
+  const fr = from.dataset.row;
+  const fc = from.dataset.col;
+  const tr = to.dataset.row;
+  const tc = to.dataset.col;
 
-  if (position + dice <= 100) {
-    position += dice;
-  }
+  gameBoard[tr][tc] = gameBoard[fr][fc];
+  gameBoard[fr][fc] = "";
 
-  // Cek ular / tangga
-  if (snakesAndLadders[position]) {
-    let newPos = snakesAndLadders[position];
-    alert(position > newPos ? "🐍 Kena ular!" : "🪜 Naik tangga!");
-    position = newPos;
-  }
+  turn = turn === "white" ? "black" : "white";
+  turnText.innerText = "Giliran: " + (turn === "white" ? "Putih" : "Hitam");
 
-  updatePlayer();
-
-  if (position === 100) {
-    alert("🎉 Selamat! Kamu menang!");
-    position = 1;
-    updatePlayer();
-  }
+  createBoard();
 }
 
 // Init
 createBoard();
-updatePlayer();
-
