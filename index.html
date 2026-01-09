@@ -1,17 +1,41 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Game Catur</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Game Catur - Sederhana</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <main>
+    <h1>Game Catur (Sederhana)</h1>
 
-<h1>♟️ Game Catur</h1>
-<p id="turn">Giliran: Putih</p>
+    <section class="controls">
+      <button id="newGameBtn">New Game</button>
+      <button id="undoBtn">Undo</button>
+      <button id="flipBtn">Flip Board</button>
+      <label><input type="checkbox" id="highlightMoves" checked /> Highlight moves</label>
+    </section>
 
-<div id="board"></div>
+    <section class="game-area">
+      <div id="board" class="board"></div>
 
-<script src="script.js"></script>
+      <aside class="sidebar">
+        <div id="status" class="status">Memuat...</div>
+        <div class="history">
+          <h3>Riwayat Langkah</h3>
+          <ol id="moveList"></ol>
+        </div>
+      </aside>
+    </section>
+
+    <footer>
+      <small>Dibuat dengan chess.js untuk aturan. Klik bidak lalu klik tujuan.</small>
+    </footer>
+  </main>
+
+  <!-- chess.js library (validasi langkah & state). -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.0.0/chess.min.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
