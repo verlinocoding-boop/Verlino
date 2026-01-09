@@ -2,21 +2,22 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Block Dash</title>
+  <title>Game Ular Tangga</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h1>Block Dash</h1>
-  <div id="game">
-    <div id="player"></div>
-    <div id="obstacle"></div>
-  </div>
+<h1>🐍🎲 Ular Tangga 🎲🐍</h1>
 
-  <p>Tekan <b>SPASI</b> untuk melompat</p>
-  <p id="score">Score: 0</p>
+<div id="board"></div>
 
-  <script src="script.js"></script>
+<div class="controls">
+  <button onclick="rollDice()">🎲 Lempar Dadu</button>
+  <p id="dice">Dadu: -</p>
+  <p id="position">Posisi: 1</p>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
 
