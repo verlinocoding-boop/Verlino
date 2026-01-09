@@ -1,43 +1,77 @@
-const player = document.getElementById("player");
-const obstacle = document.getElementById("obstacle");
-const scoreText = document.getElementById("score");
+const board = document.getElementById("board");
+const diceText = document.getElementById("dice");
+const positionText = document.getElementById("position");
 
-let score = 0;
-let isJumping = false;
+let position = 1;
 
-// Lompat
-document.addEventListener("keydown", function(event) {
-  if (event.code === "Space" && !isJumping) {
-    jump();
+// Tangga & Ular
+const snakesAndLadders = {
+  4: 14,
+  9: 31,
+  17: 7,
+  20: 38,
+  28: 84,
+  40: 59,
+  51: 67,
+  54: 34,
+  62: 19,
+  64: 60,
+  71: 91,
+  87: 24,
+  93: 73,
+  95: 75,
+  99: 78
+};
+
+// Buat papan
+function createBoard() {
+  board.innerHTML = "";
+  for (let i = 100; i >= 1; i--) {
+    const cell = document.createElement("div");
+    cell.classList.add("cell");
+    cell.innerText = i;
+    cell.id = "cell-" + i;
+    board.appendChild(cell);
   }
-});
-
-function jump() {
-  isJumping = true;
-  player.classList.add("jump");
-
-  setTimeout(() => {
-    player.classList.remove("jump");
-    isJumping = false;
-  }, 600);
 }
 
-// Deteksi tabrakan
-let collisionCheck = setInterval(() => {
-  let playerBottom = parseInt(window.getComputedStyle(player).getPropertyValue("bottom"));
-  let obstacleRight = parseInt(window.getComputedStyle(obstacle).getPropertyValue("right"));
+// Update posisi pemain
+function updatePlayer() {
+  document.querySelectorAll(".player").forEach(p => p.remove());
 
-  if (obstacleRight > 510 && obstacleRight < 550 && playerBottom < 40) {
-    obstacle.style.animation = "none";
-    obstacle.style.display = "none";
-    alert("Game Over!\nScore: " + score);
-    location.reload();
+  const player = document.createElement("div");
+  player.classList.add("player");
+
+  document.getElementById("cell-" + position).appendChild(player);
+  positionText.innerText = "Posisi: " + position;
+}
+
+// Lempar dadu
+function rollDice() {
+  let dice = Math.floor(Math.random() * 6) + 1;
+  diceText.innerText = "Dadu: " + dice;
+
+  if (position + dice <= 100) {
+    position += dice;
   }
-}, 10);
 
-// Score
-let scoreCounter = setInterval(() => {
-  score++;
-  scoreText.innerText = "Score: " + score;
-}, 500);
+  // Cek ular / tangga
+  if (snakesAndLadders[position]) {
+    let newPos = snakesAndLadders[position];
+    alert(position > newPos ? "🐍 Kena ular!" : "🪜 Naik tangga!");
+    position = newPos;
+  }
+
+  updatePlayer();
+
+  if (position === 100) {
+    alert("🎉 Selamat! Kamu menang!");
+    position = 1;
+    updatePlayer();
+  }
+}
+
+// Init
+createBoard();
+updatePlayer();
 
