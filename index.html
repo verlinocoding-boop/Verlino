@@ -1,41 +1,154 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Game Catur - Sederhana</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <title>Block Dash</title>
+
+    <!-- CSS -->
+    <style>
+        body {
+            background: #1e1e1e;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+        }
+
+        h1 {
+            margin-top: 10px;
+        }
+
+        #game {
+            width: 800px;
+            height: 300px;
+            background: #111;
+            border: 3px solid white;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #player {
+            width: 40px;
+            height: 40px;
+            background: #3498db;
+            position: absolute;
+            bottom: 0;
+            left: 60px;
+        }
+
+        .obstacle {
+            width: 40px;
+            height: 40px;
+            background: #e74c3c;
+            position: absolute;
+            bottom: 0;
+            right: -40px;
+        }
+
+        #score {
+            font-size: 20px;
+        }
+
+        #gameOver {
+            display: none;
+            font-size: 30px;
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
 </head>
+
 <body>
-  <main>
-    <h1>Game Catur (Sederhana)</h1>
 
-    <section class="controls">
-      <button id="newGameBtn">New Game</button>
-      <button id="undoBtn">Undo</button>
-      <button id="flipBtn">Flip Board</button>
-      <label><input type="checkbox" id="highlightMoves" checked /> Highlight moves</label>
-    </section>
+<h1>BLOCK DASH</h1>
+<p>Tekan <b>SPASI</b> untuk melompat</p>
 
-    <section class="game-area">
-      <div id="board" class="board"></div>
+<div id="game">
+    <div id="player"></div>
+</div>
 
-      <aside class="sidebar">
-        <div id="status" class="status">Memuat...</div>
-        <div class="history">
-          <h3>Riwayat Langkah</h3>
-          <ol id="moveList"></ol>
-        </div>
-      </aside>
-    </section>
+<div id="score">Skor: 0</div>
+<div id="gameOver">GAME OVER<br>Refresh untuk main lagi</div>
 
-    <footer>
-      <small>Dibuat dengan chess.js untuk aturan. Klik bidak lalu klik tujuan.</small>
-    </footer>
-  </main>
+<!-- JavaScript -->
+<script>
+    const player = document.getElementById("player");
+    const game = document.getElementById("game");
+    const scoreText = document.getElementById("score");
+    const gameOverText = document.getElementById("gameOver");
 
-  <!-- chess.js library (validasi langkah & state). -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.0.0/chess.min.js"></script>
-  <script src="app.js"></script>
+    let isJumping = false;
+    let position = 0;
+    let score = 0;
+    let gameOver = false;
+
+    // Kontrol lompat
+    document.addEventListener("keydown", function (e) {
+        if (e.code === "Space" && !isJumping && !gameOver) {
+            jump();
+        }
+    });
+
+    function jump() {
+        isJumping = true;
+        let upInterval = setInterval(() => {
+            if (position >= 120) {
+                clearInterval(upInterval);
+                let downInterval = setInterval(() => {
+                    if (position <= 0) {
+                        clearInterval(downInterval);
+                        isJumping = false;
+                    }
+                    position -= 5;
+                    player.style.bottom = position + "px";
+                }, 20);
+            }
+            position += 5;
+            player.style.bottom = position + "px";
+        }, 20);
+    }
+
+    // Rintangan
+    function createObstacle() {
+        if (gameOver) return;
+
+        const obstacle = document.createElement("div");
+        obstacle.classList.add("obstacle");
+        game.appendChild(obstacle);
+
+        let obstaclePosition = 800;
+
+        let moveInterval = setInterval(() => {
+            if (obstaclePosition < -40) {
+                clearInterval(moveInterval);
+                game.removeChild(obstacle);
+                score++;
+                scoreText.innerText = "Skor: " + score;
+            }
+
+            // Deteksi tabrakan
+            if (
+                obstaclePosition > 60 &&
+                obstaclePosition < 100 &&
+                position < 40
+            ) {
+                clearInterval(moveInterval);
+                gameOver = true;
+                gameOverText.style.display = "block";
+            }
+
+            obstaclePosition -= 6;
+            obstacle.style.left = obstaclePosition + "px";
+        }, 20);
+
+        setTimeout(createObstacle, Math.random() * 2000 + 1000);
+    }
+
+    createObstacle();
+</script>
+
 </body>
 </html>
+
+
