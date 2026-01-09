@@ -1,38 +1,39 @@
 body {
-  font-family: Arial, sans-serif;
   background: #222;
   color: white;
+  font-family: Arial, sans-serif;
   text-align: center;
 }
 
 #board {
-  width: 400px;
-  height: 400px;
+  width: 480px;
+  height: 480px;
   margin: 20px auto;
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   border: 4px solid white;
 }
 
 .cell {
-  border: 1px solid #555;
-  font-size: 12px;
-  position: relative;
-}
-
-.player {
-  width: 15px;
-  height: 15px;
-  background: red;
-  border-radius: 50%;
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-}
-
-.controls button {
-  padding: 10px 20px;
-  font-size: 16px;
+  width: 60px;
+  height: 60px;
+  font-size: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
+}
+
+.white {
+  background: #eee;
+  color: black;
+}
+
+.black {
+  background: #444;
+  color: white;
+}
+
+.selected {
+  outline: 3px solid yellow;
 }
