@@ -1,30 +1,22 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
   <title>Block Dash</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="ui">
-    <div id="title">Block Dash</div>
-    <div id="hud">
-      <div id="score">Skor: 0</div>
-      <div id="best">Terbaik: 0</div>
-    </div>
-    <div id="controls">Kontrol: ↑ / W lompat, Space / Shift untuk dash. Sentuh: ketuk = dash, swipe up = lompat.</div>
-    <button id="startBtn">Mulai</button>
+
+  <h1>Block Dash</h1>
+  <div id="game">
+    <div id="player"></div>
+    <div id="obstacle"></div>
   </div>
 
-  <canvas id="gameCanvas"></canvas>
+  <p>Tekan <b>SPASI</b> untuk melompat</p>
+  <p id="score">Score: 0</p>
 
-  <div id="overlay" class="hidden">
-    <div id="overlayText"></div>
-    <button id="restartBtn">Main Lagi</button>
-  </div>
-
-  <script src="game.js"></script>
+  <script src="script.js"></script>
 </body>
-</html>`
+</html>
 
